@@ -42,7 +42,7 @@ module.exports = function (app) {
     app.get("/book/:id",loginAuth,BookController.fetch);
     app.put("/book/:id",loginAuth,BookController.update);
     app.put("/book/:id/statusChange/:status",loginAuth,BookController.changeActiveStatus);
-    app.get("/book/active",loginAuth,UserController.activeList);
+    app.get("/activeBook",loginAuth,BookController.activeList);
 
 
     //Transaction Routes

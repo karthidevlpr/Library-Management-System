@@ -113,7 +113,7 @@ exports.changeActiveStatus = function (req, res) {      // Updates an Book.
 exports.activeList = function (req, res) {                // Gets the List of Book.
     console.log('Book list invoked...');
 
-    Book.find({active:true},function (err, books) {
+    Book.find({active:true,availability:true},function (err, books) {
         if (err) {
             res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({error: 'unexpected error accessing data'});
             return;

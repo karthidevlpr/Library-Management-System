@@ -301,7 +301,7 @@ function TransactionCtrl($scope,route,$state,$stateParams){
     GetUsers();
 
     var GetBooks = function () {
-        route.list({entity: "books",id:"active"}, function (response) {
+        route.list({entity: "activeBook"}, function (response) {
             $scope.books = response;
         }, function (error) {
             ErrorHandling1(error,$state)

@@ -5,6 +5,7 @@
 var HttpStatus = require('http-status');
 var Transaction = require("../models/Transaction");
 var Validation = require("./Validation");
+var Book = require("../models/Book");
 var moment= require('moment');
 
 exports.save = function(req,res){            //Transaction Save
@@ -23,7 +24,26 @@ exports.save = function(req,res){            //Transaction Save
             res.status(HttpStatus.BAD_REQUEST).json(Validation.validatingErrors(saveErr));
             return;
         }
-        res.status(HttpStatus.OK).json(saveTran);
+        
+        Book.findById(saveTran.book,function (err, book) {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            if (book != null) {
+                book.availability = false;
+                book.updatedOn = moment();
+
+                book.save(function (updateerr, updatebook) {
+                    if (updateerr) {
+                        console.log(updateerr);
+                        return;
+                    }
+                    res.status(HttpStatus.OK).json(saveTran);
+                });  
+            }
+        });
+        
     })
 };
 
@@ -58,7 +78,24 @@ exports.changeStatus = function (req, res) {      // Updates an Tranaction.
                 res.status(HttpStatus.BAD_REQUEST).json(Validation.validatingErrors(updateerr));
                 return;
             }
-            res.status(HttpStatus.OK).json(updateTran);
+            Book.findById(updateTran.book,function (err, book) {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                if (book != null) {
+                    book.availability = true;
+                    book.updatedOn = moment();
+
+                    book.save(function (updateerr, updatebook) {
+                        if (updateerr) {
+                            console.log(updateerr);
+                            return;
+                        }
+                        res.status(HttpStatus.OK).json(updateTran);
+                    });
+                }
+            });
         });
     });
 };
