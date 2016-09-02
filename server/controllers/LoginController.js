@@ -34,6 +34,26 @@ exports.logout = function (req, res) {       // LogOut User.
     
 };
 
+exports.getLoggedInUser = function(req,res){        // Get Logged in user details.
+
+    if (req.session.loggedInUser) {
+        User.findById(req.session.loggedInUser._id, {password: 0}).exec(function (err, user) {
+            if (err) {
+                res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({error: 'unexpected error accessing data'});
+                return;
+            }
+            if (user == null) {
+                res.status(HttpStatus.NOT_FOUND).json({error: 'User not found'});
+                return;
+            }
+            res.status(HttpStatus.OK).json(req.session.loggedInUser);
+        });
+    }
+    else {
+        res.status(HttpStatus.UNAUTHORIZED).json({error: 'Session invalid'});
+    }
+};
+
 function encrypt(key, data) {
     var cipher = crypto.createCipher('aes-256-cbc', key);
     var crypted = cipher.update(data, 'utf-8', 'hex');

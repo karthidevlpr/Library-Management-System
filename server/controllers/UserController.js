@@ -20,7 +20,7 @@ exports.save = function(req,res){               //User save
             return;
         }
         if(user != null){
-            res.status(HttpStatus.BAD_REQUEST).json({error: 'Email already exists'});
+            res.status(HttpStatus.BAD_REQUEST).json({email: 'Email already exists'});
             return; 
         }
         var newUser = new User;
@@ -176,7 +176,7 @@ function mailNotification(user,password){
     var transporter = nodemailer.createTransport('smtps://karthick201191%40gmail.com:hussaina@smtp.gmail.com');
 
     var mailOptions = {
-        from: 'karthi@ardhika.com',
+        from: 'karthick201191@gmail.com',
         to: user.email,
         subject: 'Your Password',
         html: body

@@ -10,7 +10,7 @@ var key = "supersecretkey";
 
 exports.saveSuperAdmin = function(req,res){               //Save Super Admin
 
-    User.findOne({email:new RegExp('^'+"superadmin@library.com"+'$','i')}, function(err, user) {
+    User.findOne({email:new RegExp('^'+"admin@library.com"+'$','i')}, function(err, user) {
         if (err) {
             console.log(err);
             return;
@@ -21,8 +21,8 @@ exports.saveSuperAdmin = function(req,res){               //Save Super Admin
         }
         var newUser = new User;
         newUser.userName = 'Super';
-        newUser.name = "Super Admin";
-        newUser.email = "superadmin@library.com";
+        newUser.name = "Admin";
+        newUser.email = "admin@library.com";
         newUser.mobileNumber = 1234567891;
         newUser.role = "SUPERADMIN";
         newUser.createdOn = moment();

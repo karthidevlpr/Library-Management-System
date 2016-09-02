@@ -25,7 +25,10 @@ function LibraryRouteConfig($stateProvider, $urlRouterProvider) {
     $stateProvider.state('menu', {
         url: '/menu',
         controller: MenuCtrl,
-        templateUrl: fileDir+'general/menu.html'
+        templateUrl: fileDir+'general/menu.html',
+        resolve: {
+            userDetail: GetPreLoginUser
+        }
     }).state('login', {
         url: '/login',
         controller: LoginCtrl,
@@ -67,10 +70,24 @@ function LibraryRouteConfig($stateProvider, $urlRouterProvider) {
 
 libraryApp.config(LibraryRouteConfig);
 
+function GetPreLoginUser($q, $state, route){
 
-function MenuCtrl($scope,$rootScope,$state,route){
-    
-    $scope.userInfo = $rootScope.userDetail;
+    var deferred = $q.defer();
+    route.get({entity: "loggedInUser"}, function (success) {
+        deferred.resolve(success);
+    }, function (error) {
+        switch (error.status) {
+            case 401 || 404:
+                deferred.reject("Not found");
+                alert("Session is expired. Please login to continue");
+                $state.go("login")
+        }
+    });
+    return deferred.promise;
+}
+
+function MenuCtrl($scope,$state,route,userDetail){
+    $scope.userInfo = userDetail;
     $scope.menuCtrlObj = {
       currentState : "users"
     };
@@ -85,13 +102,11 @@ function MenuCtrl($scope,$rootScope,$state,route){
     }
 }
 
-function LoginCtrl($scope,$state,route,$rootScope){
+function LoginCtrl($scope,$state,route){
     
     $scope.login = function(user){
 
         route.save({entity: "authenticate"},user, function (response) {
-            console.log(response);
-            $rootScope.userDetail = response
             $state.go('menu.users')
         }, function (error) {
             ErrorHandling1(error,$state)
@@ -140,6 +155,7 @@ function UserCtrl($scope,route,$state,$stateParams){
             console.log(response);
             $state.go('menu.users')
         }, function (error) {
+            console.log(error)
             switch (error.status) {
                 case 400:
                     $scope.error = error.data;
@@ -289,6 +305,10 @@ function TransactionListCtrl($scope,route,$state){
 }
 
 function TransactionCtrl($scope,route,$state,$stateParams){
+
+    $scope.transaction = {issueDate: new Date};
+
+    $scope.issueOptions = {minDate: new Date};
 
     var GetUsers = function () {
         route.list({entity: "users",id:"NORMAL",action:'active'}, function (response) {

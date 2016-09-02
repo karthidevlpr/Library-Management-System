@@ -22,7 +22,7 @@
                         <label>Issue Date</label>
                         <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy"
                                name="issueDate" ng-model="transaction.issueDate"
-                               is-open="isOpenIssue" ng-required="true" ng-focus="isOpenIssue=true;isOpenDue=false" close-text="Close"
+                               is-open="isOpenIssue" ng-required="true"  datepicker-options="issueOptions" ng-focus="isOpenIssue=true;isOpenDue=false" close-text="Close"
                                popup-placement="bottom-right" required>
                     </div>
                     <div class="form-group">

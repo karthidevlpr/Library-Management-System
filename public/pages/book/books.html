@@ -19,7 +19,10 @@
                 <tr>
                     <td>{{item.name}}</td>
                     <td>{{item.author}}</td>
-                    <td>{{item.availability}}</td>
+                    <td>
+                        <span ng-show="item.availability"><p>Availability</p></span>
+                        <span ng-show="!item.availability"><p>UnAvailability</p></span>
+                    </td>
                     <td>
                         <span ng-show="item.active"><p>Active</p></span>
                         <span ng-show="!item.active"><p>InActive</p></span>

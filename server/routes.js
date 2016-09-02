@@ -27,6 +27,7 @@ module.exports = function (app) {
     //Login Routes
     app.post("/authenticate",LoginController.authenticate);
     app.post("/logout",LoginController.logout);
+    app.get("/loggedInUser",LoginController.getLoggedInUser);
     
     //User Routes
     app.post("/user",loginAuth,UserController.save);

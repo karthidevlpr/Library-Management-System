@@ -27,7 +27,7 @@ exports.save = function(req,res){            //Transaction Save
         
         Book.findById(saveTran.book,function (err, book) {
             if (err) {
-                console.log(err);
+                res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({error: 'unexpected error accessing data'});
                 return;
             }
             if (book != null) {
@@ -80,7 +80,7 @@ exports.changeStatus = function (req, res) {      // Updates an Tranaction.
             }
             Book.findById(updateTran.book,function (err, book) {
                 if (err) {
-                    console.log(err);
+                    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({error: 'unexpected error accessing data'});
                     return;
                 }
                 if (book != null) {
