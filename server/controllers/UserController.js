@@ -173,10 +173,10 @@ function mailNotification(user,password){
     var body = '<h5>Dear /userName/</h5></br><p>Your password is : /password/</p>';
     body = body.replace('/userName/', user.name);
     body = body.replace('/password/', password);
-    var transporter = nodemailer.createTransport('smtps://karthick201191%40gmail.com:hussaina@smtp.gmail.com');
+    var transporter = nodemailer.createTransport('smtps://test%40gmail.com:test@smtp.gmail.com');
 
     var mailOptions = {
-        from: 'karthick201191@gmail.com',
+        from: 'test@gmail.com',
         to: user.email,
         subject: 'Your Password',
         html: body
